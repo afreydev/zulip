@@ -5900,3 +5900,14 @@ def do_delete_realm_export(user_profile: UserProfile, export: RealmAuditLog) -> 
     export.extra_data = ujson.dumps(export_data)
     export.save(update_fields=['extra_data'])
     notify_realm_export(user_profile)
+
+def do_get_markdown_messages(user_profile: UserProfile, messages: List[int]) -> str:
+
+    assert messages is not None
+    buf = []
+
+    for message_id in messages:
+        (message, user_message) = access_message(user_profile, message_id)
+        buf.append("**" + message.sender.short_name + "** \n\n " + message.content)
+
+    return '\n\n'.join(buf)
