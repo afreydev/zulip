@@ -5904,10 +5904,11 @@ def do_delete_realm_export(user_profile: UserProfile, export: RealmAuditLog) -> 
 def do_get_markdown_messages(user_profile: UserProfile, messages: List[int]) -> str:
 
     assert messages is not None
-    buf = []
+
+    buffer = []
 
     for message_id in messages:
         (message, user_message) = access_message(user_profile, message_id)
-        buf.append("**" + message.sender.short_name + "** \n\n " + message.content)
-
-    return '\n\n'.join(buf)
+        buffer.append("**" + message.sender.short_name + "** \n\n " + message.content)
+    
+    return '\n\n'.join(buffer)
