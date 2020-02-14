@@ -1,7 +1,7 @@
 from argparse import ArgumentParser
 from typing import Any
 
-from zerver.lib.actions import do_get_markdown_messages
+from zerver.lib.actions import get_markdown_messages
 from zerver.lib.management import ZulipBaseCommand
 
 
@@ -27,5 +27,5 @@ class Command(ZulipBaseCommand):
         realm = self.get_realm(options)
         user_profile = self.get_user(email, realm)
 
-        markdown = do_get_markdown_messages(user_profile, message_ids)
+        markdown = get_markdown_messages(user_profile, message_ids)
         print(markdown)
