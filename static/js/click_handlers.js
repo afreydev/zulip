@@ -154,8 +154,30 @@ exports.initialize = function () {
             popovers.hide_all();
         }
 
-        if (e.shiftKey) {
+        if (e.ctrlKey) {
             message_copy.select_message(this);
+        } 
+    };
+
+    const select_multiple_messages_function = function (e) {
+        if (is_clickable_message_element($(e.target))) {
+            return;
+        }
+
+        if ($(e.target).is(".message_edit_notice")) {
+            return;
+        }
+
+        if (e.shiftKey) {
+            if (e.type === "mousedown" && !message_copy.mouse_is_down) {
+                message_copy.mouse_is_down = true;
+            }
+            if (e.type === "mouseup") {
+                message_copy.mouse_is_down = false;
+            }
+            if (message_copy.mouse_is_down) {
+                message_copy.only_select_message(this);
+            }
         } 
     };
 
@@ -163,6 +185,7 @@ exports.initialize = function () {
     // selection function which will open the compose box  and select the message.
     if (!util.is_mobile()) {
         $("#main_div").on("click", ".messagebox", select_message_function);
+        $("#main_div").on("mousedown mouseup mouseover", ".messagebox", select_multiple_messages_function);
     // on the other hand, on mobile it should be done with a long tap.
     } else {
         $("#main_div").on("longtap", ".messagebox", function (e) {
@@ -391,13 +414,6 @@ exports.initialize = function () {
         $_("#preview_message_area").hide();
         $_("#preview_content").empty();
         $_("#markdown_preview").show();
-    });
-
-    // COPY AND PASTE
-
-    $('body').on('click', '.copy_selected_messages', function (e) {
-        const group_id = $(e.target).attr("group");
-        message_copy.copy_selected_messages(group_id);
     });
 
     // MUTING

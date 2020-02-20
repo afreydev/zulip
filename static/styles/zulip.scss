@@ -1057,14 +1057,14 @@ td.pointer {
     border-left: 1px;
     border-right: 1px;
     position: relative;
-    display: none;
+    display: block;
 }
 
 .messages_markdown .messages_markdown_content {
-    padding: 4px 115px 1px 10px;
+    padding: 5px 25px 5px 10px;
 }
 .messages_markdown .messages_markdown_content .messages_markdown_show {
-    margin-top: 5px; margin-left: 47px; display:block; position:relative
+    margin-top: 5px; margin-left: 5px; display:block; position:relative
 }
 
 .message_sender {
