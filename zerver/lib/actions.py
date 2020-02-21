@@ -5928,7 +5928,7 @@ def get_markdown_messages(user_profile: UserProfile, messages: List[int]) -> str
         except JsonableError:
             continue
         formatted_date = message.date_sent.strftime("%Y-%m-%d %H:%M:%S")
-        buffer.append(formatted_date + " @**" + message.sender.full_name
+        buffer.append(formatted_date + " @_**" + message.sender.full_name
                       + "**: \n\n " + message.content)
 
     return '\n\n'.join(buffer)

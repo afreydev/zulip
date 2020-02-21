@@ -156,36 +156,37 @@ exports.initialize = function () {
 
         if (e.ctrlKey) {
             message_copy.select_message(this);
-        } 
+        }
     };
 
     const select_multiple_messages_function = function (e) {
         if (is_clickable_message_element($(e.target))) {
             return;
         }
-
         if ($(e.target).is(".message_edit_notice")) {
             return;
         }
-
         if (e.shiftKey) {
-            if (e.type === "mousedown" && !message_copy.mouse_is_down) {
-                message_copy.mouse_is_down = true;
-            }
-            if (e.type === "mouseup") {
-                message_copy.mouse_is_down = false;
-            }
-            if (message_copy.mouse_is_down) {
+            if (e.type === "mousemove" && message_copy.mouse_is_down) {
+                console.log("mousemove");
                 message_copy.only_select_message(this);
             }
-        } 
+            if (e.type === "mousedown" && !message_copy.mouse_is_down) {
+                console.log("mousedown");
+                message_copy.select_message(this);
+                message_copy.set_mouse_is_down(true);
+            }
+            if (e.type === "mouseup") {
+                message_copy.set_mouse_is_down(false);
+            }
+        }
     };
 
     // if on normal non-mobile experience, a `click` event should run the message
     // selection function which will open the compose box  and select the message.
     if (!util.is_mobile()) {
         $("#main_div").on("click", ".messagebox", select_message_function);
-        $("#main_div").on("mousedown mouseup mouseover", ".messagebox", select_multiple_messages_function);
+        $("#main_div").on("mousedown mouseup mousemove", ".messagebox", select_multiple_messages_function);
     // on the other hand, on mobile it should be done with a long tap.
     } else {
         $("#main_div").on("longtap", ".messagebox", function (e) {

@@ -1644,10 +1644,10 @@ def json_fetch_raw_message(request: HttpRequest, user_profile: UserProfile,
 
 @has_request_variables
 def json_fetch_raw_list_messages(request: HttpRequest, user_profile: UserProfile,
-                                messages: List[int]=REQ(validator=check_list(check_int))
-                                ) -> HttpResponse:
-    messages = get_markdown_messages(user_profile, messages)
-    return json_success({"raw_content": messages})
+                                 messages: List[int]=REQ(validator=check_list(check_int))
+                                 ) -> HttpResponse:
+    markdown_messages = get_markdown_messages(user_profile, messages)
+    return json_success({"raw_content": markdown_messages})
 
 @has_request_variables
 def render_message_backend(request: HttpRequest, user_profile: UserProfile,

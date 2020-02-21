@@ -514,7 +514,7 @@ exports.toggle_messages_markdown = function (element, id) {
     }
 
     current_msg_list.select_id(id);
-    let actions_btn = $(current_msg_list.selected_row()).find(".actions_hover")[0];
+    const actions_btn = $(current_msg_list.selected_row()).find(".actions_hover")[0];
     $(element).closest('.message_row').toggleClass('has_popover has_actions_popover');
     const elt = $(actions_btn);
 

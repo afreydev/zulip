@@ -99,6 +99,7 @@ import "../stream_create.js";
 import "../stream_edit.js";
 import "../subs.js";
 import "../message_edit.js";
+import "../message_copy.js";
 import "../condense.js";
 import "../resize.js";
 import "../list_render.js";
@@ -197,7 +198,6 @@ import "../settings_ui.js";
 import "../search_pill.js";
 import "../search_pill_widget.js";
 import "../stream_ui_updates.js";
-import "../message_copy.js";
 
 // Import Styles
 
