@@ -130,6 +130,9 @@ exports.initialize = function () {
             return;
         }
 
+        const prev_selected = $(".selected_message");
+        const first_row = $(prev_selected).closest(".message_row");
+
         // A tricky issue here is distinguishing hasty clicks (where
         // the mouse might still move a few pixels between mouseup and
         // mousedown) from selecting-for-copy.  We handle this issue
@@ -157,28 +160,9 @@ exports.initialize = function () {
         if (e.ctrlKey) {
             message_copy.select_message(this);
         }
-    };
-
-    const select_multiple_messages_function = function (e) {
-        if (is_clickable_message_element($(e.target))) {
-            return;
-        }
-        if ($(e.target).is(".message_edit_notice")) {
-            return;
-        }
         if (e.shiftKey) {
-            if (e.type === "mousemove" && message_copy.mouse_is_down) {
-                console.log("mousemove");
-                message_copy.only_select_message(this);
-            }
-            if (e.type === "mousedown" && !message_copy.mouse_is_down) {
-                console.log("mousedown");
-                message_copy.select_message(this);
-                message_copy.set_mouse_is_down(true);
-            }
-            if (e.type === "mouseup") {
-                message_copy.set_mouse_is_down(false);
-            }
+            const final_row = $(this).closest(".message_row");
+            message_copy.select_until_message(first_row, final_row);
         }
     };
 
@@ -186,7 +170,6 @@ exports.initialize = function () {
     // selection function which will open the compose box  and select the message.
     if (!util.is_mobile()) {
         $("#main_div").on("click", ".messagebox", select_message_function);
-        $("#main_div").on("mousedown mouseup mousemove", ".messagebox", select_multiple_messages_function);
     // on the other hand, on mobile it should be done with a long tap.
     } else {
         $("#main_div").on("longtap", ".messagebox", function (e) {

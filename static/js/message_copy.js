@@ -58,9 +58,19 @@ exports.select_message = function (message_box) {
     }
 };
 
-exports.only_select_message = function (message_box) {
-    const row = $(message_box).closest(".message_row");
-    row.addClass("copy_selected_message");
+exports.select_until_message = function (first_row, final_row) {
+    if (rows.id(first_row) > rows.id(final_row)) {
+        return;
+    }
+    let current = first_row;
+    while (current.length > 0) {
+        current.addClass("copy_selected_message");
+        current = rows.next_visible(current);
+        if (rows.id(current) === rows.id(final_row)) {
+            current.addClass("copy_selected_message");
+            break;
+        }
+    }
 };
 
 window.message_copy = exports;
