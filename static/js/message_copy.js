@@ -1,22 +1,17 @@
-exports.mouse_is_down = false;
-exports.set_mouse_is_down = function (value) {
-    exports.mouse_is_down = value;
-};
+exports.messages = [];
 
 exports.copy_selected_messages = function (message_id) {
     const selected_messages = $(".copy_selected_message");
-    const messages = [];
 
-    selected_messages.each(function () {
-        const row = $(this);
-        messages.push(rows.id(row));
+    selected_messages.each(function (index, value) {
+        exports.push_message(value);
     });
 
     return channel.get({
         url: '/json/messages/markdown',
         idempotent: true,
         data: {
-            messages: JSON.stringify(messages),
+            messages: JSON.stringify(exports.messages),
         },
         success: function (data) {
             $('#copy_message_markdown_' + message_id).val(data.raw_content);
@@ -32,6 +27,11 @@ exports.copy_selected_messages = function (message_id) {
     });
 };
 
+exports.push_message = function(message_row) {
+    const row = $(message_row);
+    exports.messages.push(rows.id(row));
+}
+
 exports.show_copied_alert = function (message_id) {
     const row = $(".selected_message[zid='" + message_id + "']");
     row.find(".alert-msg")
@@ -46,6 +46,7 @@ exports.clean_copied_messages = function (message_id) {
     $(".copy_selected_message").removeClass("copy_selected_message");
     $("#messages_markdown_" + message_id).hide();
     $('#copy_message_markdown_' + message_id).val("");
+    exports.messages = [];
 };
 
 
