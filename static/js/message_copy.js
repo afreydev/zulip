@@ -2,10 +2,9 @@ exports.messages = [];
 
 exports.copy_selected_messages = function (message_id) {
     const selected_messages = $(".copy_selected_message");
-
-    selected_messages.each(function (index, value) {
-        exports.push_message(value);
-    });
+    for (let i = 0; i < selected_messages.length; i++) {
+        exports.push_message(selected_messages.eq(i));
+    }
 
     return channel.get({
         url: '/json/messages/markdown',
@@ -16,18 +15,24 @@ exports.copy_selected_messages = function (message_id) {
         success: function (data) {
             $('#copy_message_markdown_' + message_id).val(data.raw_content);
             const clipboard = new ClipboardJS('#btn_copy_message_markdown_' + message_id);
-            clipboard.on('success', function () {
-                exports.show_copied_alert(message_id);
-                exports.clean_copied_messages(message_id);
-            });
-            clipboard.on('error', function () {
-                exports.clean_copied_messages(message_id);
-            });
+            clipboard.on('success', exports.clipboard_success_handler);
+            clipboard.on('error', exports.clipboard_error_handler);
         },
     });
 };
 
-exports.push_message = function(message_row) {
+exports.clipboard_success_handler = function (e) {
+    const message_id = $(e.trigger).attr('data-message');
+    exports.show_copied_alert(message_id);
+    exports.clean_copied_messages(message_id);
+}
+
+exports.clipboard_error_handler = function (e) {
+    const message_id = $(e.trigger).attr('data-message');
+    exports.clean_copied_messages(message_id);
+}
+
+exports.push_message = function (message_row) {
     const row = $(message_row);
     exports.messages.push(rows.id(row));
 }
